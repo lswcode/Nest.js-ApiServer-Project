@@ -7,7 +7,7 @@ import { responseInterface } from 'src/interface/response.interface';
 @Injectable()
 export class ArticleService {
   private response: responseInterface;
-  private pageSize = 6; //设置每页条数
+  private pageSize = 5; //设置每页条数
   private pageCount: number; //总页数，返回给前端，让前端设置分页条数
   constructor(
     @InjectModel('ARTICLE_MODEL') private readonly ArticleModel: Model<Article>,
