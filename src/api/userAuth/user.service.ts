@@ -5,7 +5,6 @@ import { responseInterface } from 'src/interface/response.interface';
 import { User, UserAuth } from 'src/interface/user.interface';
 import { encript } from 'src/utils/crypto';
 import { JwtService } from '@nestjs/jwt';
-import { loginInterface } from 'src/interface/login.interface';
 
 @Injectable()
 export class UserService {
@@ -18,9 +17,6 @@ export class UserService {
   private createToken(userId) {
     const token = this.jwtService.sign({ id: String(userId) }); // sign的参数必须是对象，键值对格式
     return token; // 使用jwt内置的方法根据user生成指定的token
-  }
-  public async login(user: UserAuth) {
-    return await this.validateUser(user);
   }
   public async findOneByAccount(account: string) {
     return this.UserModel.findOne({
@@ -72,7 +68,7 @@ export class UserService {
   }
 
   // -----------------------用户登录方法--------------------------------------------
-  private async validateUser(user: UserAuth) {
+  public async login(user: UserAuth, backstageAuth = false) {
     const account: string = user.account;
     const password: string = user.password;
     try {
@@ -84,19 +80,43 @@ export class UserService {
         };
       } else {
         const saltPassword = encript(password, res.salt);
-        if (saltPassword == res.password) {
-          const token: string = this.createToken(res._id);
-          this.response = {
-            code: 1,
-            msg: '登陆成功',
-            userId: res._id,
-            token, //将token返回给前端
-          };
+        if (!backstageAuth) {
+          if (saltPassword == res.password) {
+            const token: string = this.createToken(res._id);
+            this.response = {
+              code: 1,
+              msg: '登陆成功',
+              userId: res._id,
+              token, //将token返回给前端
+            };
+          } else {
+            this.response = {
+              code: 2,
+              msg: '账号或密码不正确',
+            };
+          }
         } else {
-          this.response = {
-            code: 2,
-            msg: '账号或密码不正确',
-          };
+          if (res.backstageAuth == 'admin') {
+            if (saltPassword == res.password) {
+              const token: string = this.createToken(res._id);
+              this.response = {
+                code: 1,
+                msg: '登陆成功',
+                userId: res._id,
+                token, //将token返回给前端
+              };
+            } else {
+              this.response = {
+                code: 2,
+                msg: '账号或密码不正确',
+              };
+            }
+          } else {
+            this.response = {
+              code: 2,
+              msg: '账号权限不足',
+            };
+          }
         }
       }
     } catch (err) {

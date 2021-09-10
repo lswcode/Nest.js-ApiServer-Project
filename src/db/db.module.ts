@@ -8,6 +8,11 @@ import { UserSchema } from './schema/user.schema';
 // 所以如果添加新的Model模型就在这里注册，需要写好模型名，导入模板schema和写好集合名
 const MONGO_MODELS = MongooseModule.forFeature([
   { name: 'USER_MODEL', schema: UserSchema, collection: 'users' },
+  // {
+  //   name: 'BACKSTAGE_USER_MODEL',
+  //   schema: backstageUserSchema,
+  //   collection: 'backstageUsers',
+  // },
   { name: 'ARTICLE_MODEL', schema: ArticleSchema, collection: 'articles' },
 ]);
 

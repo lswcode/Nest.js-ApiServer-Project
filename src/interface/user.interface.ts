@@ -5,6 +5,9 @@ import { Document } from 'mongoose';
 @Schema()
 export class User extends Document {
   @Prop()
+  backstageAuth?: string;
+
+  @Prop()
   @ApiProperty({
     description: '用户名',
   })
@@ -24,6 +27,7 @@ export class User extends Document {
   @Prop()
   readonly salt?: string;
 }
+// -------------------------------------------------------------------------
 export class UserAuth extends Document {
   @Prop()
   @ApiProperty({
@@ -37,3 +41,4 @@ export class UserAuth extends Document {
   })
   password: string;
 }
+// ------------------------------------------------------------------
