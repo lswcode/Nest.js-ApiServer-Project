@@ -10,7 +10,7 @@ export class HashPasswordMiddleware implements NestMiddleware {
     if (userPassword) {
       const salt = addSalt();
       userPassword = encript(userPassword, salt); // 将密码和生成的salt盐传入函数，生成一个加密的密码
-      req.body['password'] = userPassword; // 将req中的password修改为加密后的密码
+      req.body['password'] = userPassword; // 如果req请求中存在password，则把password修改为加密后的密码，即用户注册时就会自动把密码加密
       req.body['salt'] = salt;
       // 把加密算法的盐也传入req，只有使用原始密码和对应的salt传入encript，才能得到存入数据库的正确密码
     }

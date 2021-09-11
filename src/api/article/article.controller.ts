@@ -52,9 +52,4 @@ export class ArticleController {
   public findAllArticle(@Param('page') page: number) {
     return this.articleService.findArticleByPage(page);
   }
-  @Get('findUser')
-  @ApiOperation({ summary: '根据token解密后查找到指定用户' })
-  public findUser(@Req() req) {
-    return req.user;
-  }
 }

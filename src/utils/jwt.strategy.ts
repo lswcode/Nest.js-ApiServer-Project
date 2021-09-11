@@ -24,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // 每次携带token的请求，验证token时都会执行这里
     const user = await this.UserModel.findById(tokenObj.id); //生成token时是使用用户数据库id生成的，所以解密出的数据中就有这个id
     // 根据用户id查找到用户返回给req对象
-    return user;
+    return user; // 返回根据ID查询到的用户，也可以直接返回ID,注意: 这个返回的值必须通过req.user获取，user是规定好的，这里不管返回时名字叫什么，最终在req获取时必须是req.user
     // Passport将会把validate()方法的返回值，构建成一个user对象，并将其作为属性附加到req请求对象上
     // 即我们可以在controller的@Req()请求对象中获取到这里返回的值，使用req.user获取
   }

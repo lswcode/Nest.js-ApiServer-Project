@@ -1,6 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ArticleSchema } from './schema/article.schema';
+import { CommentSchema } from './schema/comment.schema';
 import { UserSchema } from './schema/user.schema';
 
 // MongooseModule提供了forFeature()方法来配置模块，定义哪些Model模型应该注册在当前数据库范围中
@@ -14,6 +15,7 @@ const MONGO_MODELS = MongooseModule.forFeature([
   //   collection: 'backstageUsers',
   // },
   { name: 'ARTICLE_MODEL', schema: ArticleSchema, collection: 'articles' },
+  { name: 'COMMENT_MODEL', schema: CommentSchema, collection: 'comments' },
 ]);
 
 @Global() // 标记为数据库为全局模块，因为别的模块中经常使用，使用
