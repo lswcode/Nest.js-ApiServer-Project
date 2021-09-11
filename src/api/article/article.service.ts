@@ -59,6 +59,7 @@ export class ArticleService {
   public async changeArticle(articleId: string, articleContent: Article) {
     try {
       await this.ArticleModel.findByIdAndUpdate(articleId, articleContent);
+      // mongoose只会把articleContent中存在的内容更新，如果没写对应的键值对，则不会更新，例如传过来的数据中没有title只有content，则只会更新content
       this.response = {
         code: 1,
         msg: '文章修改成功',
@@ -77,6 +78,7 @@ export class ArticleService {
   // ----------------------------------查找单篇文章接口-----------------------------------------------------------
   public async findArticle(articleId: string) {
     try {
+      console.log(articleId);
       const data = await this.ArticleModel.findById(articleId);
       this.response = {
         code: 1,
