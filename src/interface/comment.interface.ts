@@ -7,7 +7,7 @@ import { Document } from 'mongoose';
 export class Comment extends Document {
   @Prop()
   @ApiProperty({
-    description: '评论数据库id',
+    description: '评论id',
   })
   commentId?: string;
 

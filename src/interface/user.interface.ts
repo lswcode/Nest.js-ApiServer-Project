@@ -26,13 +26,16 @@ export class User extends Document {
   password: string;
 
   @Prop()
-  readonly contact?: string; // 用户联系方式
+  contact?: string; // 用户联系方式
 
   @Prop()
-  readonly profileImg?: string; // 用户头像
+  profileImg?: string; // 用户头像
 
   @Prop()
   readonly salt?: string; //密码加盐
+
+  @Prop()
+  originalPassword?: string; //密码加盐
 }
 // ---------------------用户验证口----------------------------------------------------
 export class UserAuth extends Document {
@@ -60,12 +63,12 @@ export class UserInfo extends Document {
   @ApiProperty({
     description: '用户联系方式',
   })
-  readonly contact: string;
+  contact: string;
 
   @Prop()
   @ApiProperty({
     description: '用户头像',
   })
-  readonly profileImg: string;
+  profileImg: string;
 }
 // ------------------------------------------------------------------

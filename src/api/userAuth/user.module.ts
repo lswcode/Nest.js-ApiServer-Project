@@ -29,7 +29,7 @@ export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(HashPasswordMiddleware)
-      .forRoutes('user/regist')
+      .forRoutes('user/regist') // 限制这个密码加密中间件只在注册和更改密码请求中生效
       .apply(HashPasswordMiddleware)
       .forRoutes('user/change');
   }

@@ -1,4 +1,12 @@
-import { Controller, UseGuards, Get, Body, Post, Req } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Body,
+  Post,
+  Req,
+  Param,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Comment } from 'src/interface/comment.interface';
@@ -16,9 +24,9 @@ export class CommentController {
     return this.commentService.createComment(comment, req.user.userName);
   }
 
-  @Get('all')
-  @ApiOperation({ summary: '查询所有用户评论' })
-  public findAllComment() {
-    return this.commentService.findComment();
+  @Get('all/:page')
+  @ApiOperation({ summary: '查询指定页码的用户评论' })
+  public findAllComment(@Param('page') page: number) {
+    return this.commentService.findComment(page);
   }
 }

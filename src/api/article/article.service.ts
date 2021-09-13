@@ -7,7 +7,7 @@ import { responseInterface } from 'src/interface/response.interface';
 @Injectable()
 export class ArticleService {
   private response: responseInterface;
-  private pageSize = 5; //设置每页条数
+  private pageSize = 6; //设置每页条数
   private pageCount: number; //总页数，返回给前端，让前端设置分页条数
   constructor(
     @InjectModel('ARTICLE_MODEL') private readonly ArticleModel: Model<Article>,
@@ -108,7 +108,7 @@ export class ArticleService {
       // Math.ceil取整函数，对数字向上取整
       this.response = {
         code: 1,
-        msg: '获取所有文章成功',
+        msg: '获取文章数据成功',
         data,
         pageSize: this.pageSize, // 每页条数
         pageCount: this.pageCount, // 总页数
@@ -118,7 +118,7 @@ export class ArticleService {
       Logger.warn(error);
       this.response = {
         code: 0,
-        msg: '获取所有文章失败',
+        msg: '获取文章数据失败',
         data: error,
       };
     } finally {

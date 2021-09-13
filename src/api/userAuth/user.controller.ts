@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 // import { Role } from 'src/guards/role.decorator';
@@ -31,7 +31,7 @@ export class UserController {
   @Post('change')
   @UseGuards(AuthGuard('jwt')) // 这个才是用来触发token守卫的
   @ApiOperation({ summary: '用户修改密码接口' })
-  public async userChange(@Body() userDto: UserAuth) {
+  public async userChange(@Body() userDto: User) {
     return await this.userService.changePsaaword(userDto);
   }
 
@@ -41,7 +41,6 @@ export class UserController {
   @ApiOperation({ summary: '用户个人信息添加和修改' })
   public async userInforFun(@Req() req, @Body() information: UserInfo) {
     console.log(req.user._id);
-
     return await this.userService.userInfor(req.user._id, information);
   }
 

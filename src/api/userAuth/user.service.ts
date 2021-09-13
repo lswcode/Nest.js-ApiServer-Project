@@ -11,7 +11,7 @@ export class UserService {
   private response: responseInterface;
   constructor(
     @InjectModel('USER_MODEL') private readonly UserModel: Model<User>,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService, //用来生成token
   ) {}
   // ---------------------------工具方法-----------------------------------------------------------
   private createToken(userId) {
@@ -129,8 +129,9 @@ export class UserService {
   }
 
   // -----------------------用户修改密码方法，暂时只支持管理员直接修改--------------------------------------------------------------------------------
-
-  public async changePsaaword(user: UserAuth) {
+  // 传入账号和密码，中间件会加上原始密码，最终一起存入，密码和原始密码会被修改，账号和用户名会保持不变，并不会被影响
+  // 只会修改当前user中存在的值，数据库中存在，当前user中不存在，则被不会影响
+  public async changePsaaword(user: User) {
     try {
       const account = await this.findOneByAccount(user.account);
       console.log(account);
