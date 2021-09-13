@@ -12,8 +12,10 @@ export class CommentService {
   ) {}
 
   // -----------------------------创建评论接口------------------------------------------------------
-  public async createComment(comment: Comment) {
+  public async createComment(comment: Comment, userName) {
     comment.show = true;
+    comment.userName = userName;
+    console.log(userName);
     const createComment = new this.CommentModel(comment);
     createComment.date = createComment._id.getTimestamp().toLocaleString(); // 格式化创建文件的时间
     try {

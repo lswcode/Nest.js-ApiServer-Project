@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Body, Post } from '@nestjs/common';
+import { Controller, UseGuards, Get, Body, Post, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Comment } from 'src/interface/comment.interface';
@@ -12,8 +12,8 @@ export class CommentController {
   constructor(private commentService: CommentService) {}
   @Post('create')
   @ApiOperation({ summary: '创建评论' })
-  public addComment(@Body() comment: Comment) {
-    return this.commentService.createComment(comment);
+  public addComment(@Req() req, @Body() comment: Comment) {
+    return this.commentService.createComment(comment, req.user.userName);
   }
 
   @Get('all')

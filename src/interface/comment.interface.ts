@@ -7,9 +7,22 @@ import { Document } from 'mongoose';
 export class Comment extends Document {
   @Prop()
   @ApiProperty({
+    description: '评论数据库id',
+  })
+  commentId?: string;
+
+  @Prop()
+  @ApiProperty({
+    description: '用户名',
+  })
+  userName?: string;
+
+  @Prop()
+  @ApiProperty({
     description: '评论创建日期',
   })
   date?: string;
+
   @Prop()
   @ApiProperty({
     description: '评论的文章标题',
