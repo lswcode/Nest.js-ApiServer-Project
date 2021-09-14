@@ -6,6 +6,8 @@ import {
   Post,
   Req,
   Param,
+  Query,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -28,5 +30,12 @@ export class CommentController {
   @ApiOperation({ summary: '查询指定页码的用户评论' })
   public findAllComment(@Param('page') page: number) {
     return this.commentService.findComment(page);
+  }
+
+  @Put('update')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: '更新评论显示状态' })
+  public findUser(@Query('_id') _id: string, @Body('show') show: boolean) {
+    return this.commentService.updateComment(_id, show);
   }
 }

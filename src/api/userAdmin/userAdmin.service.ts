@@ -18,6 +18,7 @@ export class UserAdminService {
       const dataNum = (await this.UserModel.find()).length;
       // 和前端约定好一页的数量，就可以根据前端请求的页码请求指定位置的数据
       const data = await this.UserModel.find()
+        .sort({ _id: -1 })
         .skip(page > 1 ? (page - 1) * this.pageSize : 0)
         .limit(this.pageSize);
       this.pageCount = Math.ceil(dataNum / this.pageSize);
@@ -68,6 +69,27 @@ export class UserAdminService {
       this.response = {
         code: 0,
         msg: '获取用户数据失败',
+        data: error,
+      };
+    } finally {
+      return this.response;
+    }
+  }
+  // -------------------------------删除用户接口-------------------------------------------------------------------------
+  public async delUser(UserId: string) {
+    try {
+      const data = await this.UserModel.findByIdAndDelete(UserId);
+      // 如果ID正确，data存在则执行下面代码，ID不存在则会报错，去执行catch中的代码
+      this.response = {
+        code: 1,
+        msg: '用户删除成功',
+        data: data._id,
+      };
+    } catch (error) {
+      Logger.warn(error);
+      this.response = {
+        code: 0,
+        msg: '用户删除失败',
         data: error,
       };
     } finally {

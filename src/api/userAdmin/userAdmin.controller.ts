@@ -21,4 +21,10 @@ export class UserAdminController {
   public findUser(@Query('userName') userName: string) {
     return this.userAdminService.findUserByUserName(userName);
   }
+  @Get('delete/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: '删除用户' })
+  public removeUser(@Param('id') UserId: string) {
+    return this.userAdminService.delUser(UserId);
+  }
 }
