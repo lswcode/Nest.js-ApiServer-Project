@@ -19,7 +19,7 @@ export class CommentService {
     comment.userName = userName;
     console.log(userName);
     const createComment = new this.CommentModel(comment);
-    createComment.date = createComment._id.getTimestamp().toLocaleString(); // 格式化创建文件的时间
+    createComment.date = createComment._id.getTimestamp().toLocaleDateString(); // 格式化创建文件的时间
     try {
       const data = await createComment.save();
       this.response = {

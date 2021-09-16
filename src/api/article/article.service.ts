@@ -16,7 +16,7 @@ export class ArticleService {
   // -----------------------------创建文章接口------------------------------------------------------
   public async createArticle(article: Article) {
     const createArticle = new this.ArticleModel(article);
-    createArticle.date = createArticle._id.getTimestamp().toLocaleString(); // 格式化创建文件的时间
+    createArticle.date = createArticle._id.getTimestamp().toLocaleDateString(); // 格式化创建文件的时间
     try {
       const data = await createArticle.save();
       this.response = {
@@ -108,6 +108,49 @@ export class ArticleService {
         .sort({ _id: -1 })
         .skip(page > 1 ? (page - 1) * this.pageSize : 0)
         .limit(this.pageSize);
+      this.pageCount = Math.ceil(dataNum / this.pageSize);
+      // Math.ceil取整函数，对数字向上取整
+      this.response = {
+        code: 1,
+        msg: '获取文章数据成功',
+        data,
+        pageSize: this.pageSize, // 每页条数
+        pageCount: this.pageCount, // 总页数
+        dataNum, // 总数据条数
+      };
+    } catch (error) {
+      Logger.warn(error);
+      this.response = {
+        code: 0,
+        msg: '获取文章数据失败',
+        data: error,
+      };
+    } finally {
+      return this.response;
+    }
+  }
+
+  // -------------------------------根据创建文章时间返回指定条数文章的接口---------------------------------------------------------------------------
+  public async findArticleByTime(
+    page: number,
+    startTime: string,
+    endTime: string,
+  ) {
+    try {
+      const dataNum = (
+        await this.ArticleModel.find({
+          date: { $gte: startTime, $lte: endTime },
+        })
+      ).length;
+      // 和前端约定好一页的数量，就可以根据前端请求的页码请求指定位置的数据
+      const data = await this.ArticleModel.find({
+        date: { $gte: startTime, $lte: endTime },
+      })
+        .sort({ _id: -1 })
+        .skip(page > 1 ? (page - 1) * this.pageSize : 0)
+        .limit(this.pageSize);
+      console.log(startTime, endTime);
+      console.log(data);
       this.pageCount = Math.ceil(dataNum / this.pageSize);
       // Math.ceil取整函数，对数字向上取整
       this.response = {

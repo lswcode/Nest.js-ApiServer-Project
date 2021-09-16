@@ -24,6 +24,8 @@ export class User extends Document {
     description: '密码',
   })
   password: string;
+  @Prop()
+  date?: string; // 用户创建日期
 
   @Prop()
   contact?: string; // 用户联系方式

@@ -7,6 +7,7 @@ import {
   UseGuards,
   Get,
   Req,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -51,5 +52,14 @@ export class ArticleController {
   @ApiOperation({ summary: '查找指定页码，并返回指定条数文章的接口' })
   public findAllArticle(@Param('page') page: number) {
     return this.articleService.findArticleByPage(page);
+  }
+  @Put('time/:page')
+  @ApiOperation({ summary: '根据时间返回指定条数文章的接口' })
+  public findArticleByTimeFun(@Param('page') page: number, @Body() time) {
+    return this.articleService.findArticleByTime(
+      page,
+      time.startTime,
+      time.endTime,
+    );
   }
 }

@@ -47,6 +47,7 @@ export class UserService {
       } else {
         try {
           const createUser = new this.UserModel(user); // 实例化一个数据库Module模型，即创建一个文档数据
+          createUser.date = createUser._id.getTimestamp().toLocaleDateString();
           await createUser.save();
           this.response = {
             code: 1,

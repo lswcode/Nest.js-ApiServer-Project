@@ -19,10 +19,10 @@ export class UserController {
   @Post('backstageLogin')
   @ApiOperation({ summary: '后台登录接口' })
   public async backstageAuth(@Body() userDto: UserAuth) {
-    return await this.userService.login(userDto, true);
+    return await this.userService.login(userDto, true); //如果是后台登录，则开启管理员认证
   }
 
-  @Post('regist')
+  @Post('register')
   @ApiOperation({ summary: '用户注册接口' })
   async registFun(@Body() userDto: User) {
     return await this.userService.regist(userDto);
