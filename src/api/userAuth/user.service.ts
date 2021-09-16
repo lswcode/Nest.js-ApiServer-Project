@@ -29,6 +29,7 @@ export class UserService {
     });
   }
   // ------------------------用户注册方法---------------------------------------------------------
+
   public async regist(user: User) {
     try {
       const userName = await this.findOneByUserName(user.userName);
