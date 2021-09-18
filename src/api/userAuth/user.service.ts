@@ -31,6 +31,8 @@ export class UserService {
   // ------------------------用户注册方法---------------------------------------------------------
 
   public async regist(user: User) {
+    console.log('执行注册');
+
     try {
       const userName = await this.findOneByUserName(user.userName);
       const account = await this.findOneByAccount(user.account);
@@ -84,6 +86,7 @@ export class UserService {
         };
       } else {
         const saltPassword = encript(password, res.salt);
+        console.log(saltPassword);
         if (!backstageAuth) {
           if (saltPassword == res.password) {
             const token: string = this.createToken(res._id);
