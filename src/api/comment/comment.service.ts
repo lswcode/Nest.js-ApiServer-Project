@@ -17,7 +17,6 @@ export class CommentService {
   public async createComment(comment: Comment, userName) {
     comment.show = true;
     comment.userName = userName;
-    console.log(userName);
     const createComment = new this.CommentModel(comment);
     createComment.date = createComment._id.getTimestamp().toLocaleDateString(); // 格式化创建文件的时间
     try {

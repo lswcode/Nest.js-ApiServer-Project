@@ -20,7 +20,9 @@ export class UserAdminService {
       const data = await this.UserModel.find()
         .sort({ _id: -1 })
         .skip(page > 1 ? (page - 1) * this.pageSize : 0)
+        // skip()方法用来跳过指定数量的数据
         .limit(this.pageSize);
+      // limit()方法指定返回的数据数量
       this.pageCount = Math.ceil(dataNum / this.pageSize);
       // Math.ceil取整函数，对数字向上取整
       this.response = {
@@ -46,14 +48,44 @@ export class UserAdminService {
   // -------------------------------根据用户名返回指定用户---------------------------------------------------------------------------
   public async findUserByUserName(userName) {
     try {
-      const data = await this.UserModel.findOne({
+      const data: any = await this.UserModel.findOne({
         userName,
       });
       if (data) {
         this.response = {
           code: 1,
           msg: '获取用户数据成功',
-          data: [data],
+          data,
+          dataNum: 1, // 总数据条数
+        };
+      } else {
+        this.response = {
+          code: 0,
+          msg: '用户不存在',
+          data,
+          dataNum: 0, // 总数据条数
+        };
+      }
+    } catch (error) {
+      Logger.warn(error);
+      this.response = {
+        code: 0,
+        msg: '获取用户数据失败',
+        data: error,
+      };
+    } finally {
+      return this.response;
+    }
+  }
+  // ---------------------------------根据用户id查找用户-----------------------------------------------------------------
+  public async findUserById(_id) {
+    try {
+      const data: any = await this.UserModel.findById(_id);
+      if (data) {
+        this.response = {
+          code: 1,
+          msg: '获取用户数据成功',
+          data,
           dataNum: 1, // 总数据条数
         };
       } else {

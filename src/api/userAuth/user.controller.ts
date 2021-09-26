@@ -19,7 +19,7 @@ export class UserController {
   @Post('backstageLogin')
   @ApiOperation({ summary: '后台登录接口' })
   public async backstageAuth(@Body() userDto: UserAuth) {
-    return await this.userService.login(userDto, true); //如果是后台登录，则开启管理员认证
+    return await this.userService.login(userDto, true); //后台登录的接口，需要开启管理员认证
   }
 
   @Post('register')
@@ -40,7 +40,6 @@ export class UserController {
   @UseGuards(AuthGuard('jwt')) // 这个才是用来触发token守卫的
   @ApiOperation({ summary: '用户个人信息添加和修改' })
   public async userInforFun(@Req() req, @Body() information: UserInfo) {
-    console.log(req.user._id);
     return await this.userService.userInfor(req.user._id, information);
   }
 

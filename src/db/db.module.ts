@@ -1,6 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ArticleSchema } from './schema/article.schema';
+import { ChannelSchema } from './schema/channel.schema';
 import { CommentSchema } from './schema/comment.schema';
 import { UserSchema } from './schema/user.schema';
 
@@ -16,6 +17,7 @@ const MONGO_MODELS = MongooseModule.forFeature([
   // },
   { name: 'ARTICLE_MODEL', schema: ArticleSchema, collection: 'articles' },
   { name: 'COMMENT_MODEL', schema: CommentSchema, collection: 'comments' },
+  { name: 'CHANNEL_MODEL', schema: ChannelSchema, collection: 'channels' },
 ]);
 
 @Global() // 标记为数据库为全局模块，因为别的模块中经常使用，使用
