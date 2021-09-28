@@ -7,11 +7,6 @@ import { Document } from 'mongoose';
 export class Channel extends Document {
   @Prop()
   @ApiProperty({
-    description: '数据创建日期',
-  })
-  date?: string;
-  @Prop()
-  @ApiProperty({
     description: '频道name',
   })
   name: string;
@@ -21,4 +16,23 @@ export class Channel extends Document {
     description: '数据内容',
   })
   content: string;
+
+  @Prop()
+  @ApiProperty({
+    description: '数据页码',
+  })
+  date?: string; // 数据创建日期
+}
+export class QueryChannel extends Document {
+  @Prop()
+  @ApiProperty({
+    description: '频道name',
+  })
+  name: string;
+
+  @Prop()
+  @ApiProperty({
+    description: '数据页码',
+  })
+  page: number;
 }

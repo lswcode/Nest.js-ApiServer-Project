@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Controller,
   Get,
@@ -10,7 +11,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { ChannelService } from './channel.service';
-import { Channel } from 'src/interface/channel.interface';
+import { Channel, QueryChannel } from 'src/interface/channel.interface';
 
 @Controller('channel')
 @ApiTags('频道内容API')
@@ -28,12 +29,22 @@ export class ChannelController {
   public channelNameFun() {
     return this.channelService.channelName();
   }
-  @Get('find')
+  @Get('findByName')
   @ApiOperation({ summary: '根据频道name查找数据' })
-  public findChannelByNameFun(@Query() channelDto) {
+  public findChannelByNameFun(@Query() channelDto: QueryChannel) {
     return this.channelService.findChannelByName(
       channelDto.name,
       channelDto.page,
     );
+  }
+  @Get('findByContent')
+  @ApiOperation({ summary: '根据频道内容查找数据' })
+  public findChannelByContentFun(@Query('content') content: string) {
+    return this.channelService.findChannelByContent(content);
+  }
+  @Get('search')
+  @ApiOperation({ summary: '根据搜索输入内容查找数据' })
+  public searchSuggestFun(@Query('inputContent') inputContent: string) {
+    return this.channelService.searchSuggest(inputContent);
   }
 }

@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class User extends Document {
-  @Prop()
+  @Prop() // Prop表示定义了一个属性
   backstageAuth?: string;
 
   @Prop()
