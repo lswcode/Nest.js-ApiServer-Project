@@ -38,12 +38,12 @@ export class ChannelController {
     );
   }
   @Get('findByContent')
-  @ApiOperation({ summary: '根据频道内容查找数据' })
+  @ApiOperation({ summary: '根据输入内容查找数据' })
   public findChannelByContentFun(@Query('content') content: string) {
     return this.channelService.findChannelByContent(content);
   }
   @Get('search')
-  @ApiOperation({ summary: '根据搜索输入内容查找数据' })
+  @ApiOperation({ summary: '根据搜索输入内容查找数据/即搜索建议' })
   public searchSuggestFun(@Query('inputContent') inputContent: string) {
     return this.channelService.searchSuggest(inputContent);
   }

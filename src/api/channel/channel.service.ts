@@ -97,7 +97,7 @@ export class ChannelService {
     }
   }
 
-  // -----------------------------根据频道内容查找数据接口------------------------------------------------------
+  // -----------------------------根据输入内容查找数据接口------------------------------------------------------
   public async findChannelByContent(content: string) {
     try {
       const data: any = await this.ChannelModel.findOne({

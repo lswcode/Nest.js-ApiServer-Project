@@ -14,7 +14,7 @@ export class CommentService {
   ) {}
 
   // -----------------------------创建评论接口------------------------------------------------------
-  public async createComment(comment: Comment, userName) {
+  public async createComment(comment: Comment, userName: string) {
     comment.show = true;
     comment.userName = userName;
     const createComment = new this.CommentModel(comment);

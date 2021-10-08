@@ -25,6 +25,12 @@ export class Comment extends Document {
 
   @Prop()
   @ApiProperty({
+    description: '评论的文章id',
+  })
+  articleId: string;
+
+  @Prop()
+  @ApiProperty({
     description: '评论的文章标题',
   })
   title: string;
