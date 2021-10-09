@@ -41,13 +41,45 @@ export class CommentService {
   // ----------------------------------查找指定页码评论的接口-----------------------------------------------------------
   public async findComment(page) {
     try {
-      const dataNum = (await this.CommentModel.find()).length;
       // 和前端约定好一页的数量，就可以根据前端请求的页码请求指定位置的数据
       // 当根据文章返回指定评论时需要加上find({show:true})
       const res = await this.CommentModel.find()
         .sort({ _id: -1 })
         .skip(page > 1 ? (page - 1) * this.pageSize : 0)
         .limit(this.pageSize);
+      const dataNum = res.length;
+      this.pageCount = Math.ceil(dataNum / this.pageSize);
+      // Math.ceil取整函数，对数字向上取整
+      this.response = {
+        code: 1,
+        msg: '评论查询成功',
+        data: res,
+        pageSize: this.pageSize, // 每页条数
+        pageCount: this.pageCount, // 总页数
+        dataNum, // 总数据条数
+      };
+    } catch (error) {
+      Logger.warn(error);
+      this.response = {
+        code: 0,
+        msg: '评论查询失败',
+        data: error,
+      };
+    } finally {
+      return this.response;
+    }
+  }
+
+  // -------------------------根据文章id查找对应的评论-----------------------------------------------------------
+  public async findByArticleId(page: number, id: string) {
+    try {
+      // 和前端约定好一页的数量，就可以根据前端请求的页码请求指定位置的数据
+      // 当根据文章返回指定评论时需要加上find({show:true})
+      const res = await this.CommentModel.find({ articleId: id })
+        .sort({ _id: -1 })
+        .skip(page > 1 ? (page - 1) * this.pageSize : 0)
+        .limit(this.pageSize);
+      const dataNum = res.length;
       this.pageCount = Math.ceil(dataNum / this.pageSize);
       // Math.ceil取整函数，对数字向上取整
       this.response = {

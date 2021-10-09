@@ -97,7 +97,38 @@ export class ChannelService {
     }
   }
 
-  // -----------------------------根据输入内容查找数据接口------------------------------------------------------
+  // -----------------------返回搜索联想建议--------------------------------------------------------------------
+  public async searchSuggest(content: string) {
+    try {
+      const data: any = await this.ChannelModel.find({
+        content: { $regex: `^${content}`, $options: 'i' },
+      }).limit(6);
+      if (data) {
+        this.response = {
+          code: 1,
+          msg: '获取搜索建议成功',
+          data,
+        };
+      } else {
+        this.response = {
+          code: 0,
+          msg: '获取搜索建议失败',
+          data,
+        };
+      }
+    } catch (error) {
+      Logger.warn(error);
+      this.response = {
+        code: 0,
+        msg: '获取搜索建议成功',
+        data: error,
+      };
+    } finally {
+      return this.response;
+    }
+  }
+
+  // -----------------------------根据搜索内容返回数据结果------------------------------------------------------
   public async findChannelByContent(content: string) {
     try {
       const data: any = await this.ChannelModel.findOne({
@@ -122,35 +153,6 @@ export class ChannelService {
       this.response = {
         code: 0,
         msg: '获取频道内容失败',
-        data: error,
-      };
-    } finally {
-      return this.response;
-    }
-  }
-  public async searchSuggest(content: string) {
-    try {
-      const data: any = await this.ChannelModel.find({
-        content: { $regex: `^${content}`, $options: 'i' },
-      }).limit(6);
-      if (data) {
-        this.response = {
-          code: 1,
-          msg: '获取搜索建议成功',
-          data,
-        };
-      } else {
-        this.response = {
-          code: 0,
-          msg: '获取搜索建议失败',
-          data,
-        };
-      }
-    } catch (error) {
-      Logger.warn(error);
-      this.response = {
-        code: 0,
-        msg: '获取搜索建议成功',
         data: error,
       };
     } finally {

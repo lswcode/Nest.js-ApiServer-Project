@@ -101,12 +101,12 @@ export class ArticleService {
   // -------------------------------查找指定页码，并返回指定条数文章的接口---------------------------------------------------------------------------
   public async findArticleByPage(page) {
     try {
-      const dataNum = (await this.ArticleModel.find()).length;
       // 和前端约定好一页的数量，就可以根据前端请求的页码请求指定位置的数据
       const data = await this.ArticleModel.find()
         .sort({ _id: -1 })
         .skip(page > 1 ? (page - 1) * this.pageSize : 0)
         .limit(this.pageSize);
+      const dataNum = data.length;
       this.pageCount = Math.ceil(dataNum / this.pageSize);
       // Math.ceil取整函数，对数字向上取整
       this.response = {
@@ -136,11 +136,6 @@ export class ArticleService {
     endTime: string,
   ) {
     try {
-      const dataNum = (
-        await this.ArticleModel.find({
-          date: { $gte: startTime, $lte: endTime },
-        })
-      ).length;
       // 和前端约定好一页的数量，就可以根据前端请求的页码请求指定位置的数据
       const data = await this.ArticleModel.find({
         date: { $gte: startTime, $lte: endTime },
@@ -148,8 +143,7 @@ export class ArticleService {
         .sort({ _id: -1 })
         .skip(page > 1 ? (page - 1) * this.pageSize : 0)
         .limit(this.pageSize);
-      console.log(startTime, endTime);
-      console.log(data);
+      const dataNum = data.length;
       this.pageCount = Math.ceil(dataNum / this.pageSize);
       // Math.ceil取整函数，对数字向上取整
       this.response = {
@@ -165,6 +159,45 @@ export class ArticleService {
       this.response = {
         code: 0,
         msg: '获取文章数据失败',
+        data: error,
+      };
+    } finally {
+      return this.response;
+    }
+  }
+
+  // ---------------------------根据输入的文章标题查找文章----------------------------------------------------------
+  public async findArticleByTitle(page: number, title: string) {
+    try {
+      const data: any = await this.ArticleModel.find({
+        title: { $regex: `^${title}`, $options: 'i' },
+      })
+        .sort({ _id: -1 })
+        .skip(page > 1 ? (page - 1) * this.pageSize : 0)
+        .limit(this.pageSize);
+      const dataNum = data.length;
+      this.pageCount = Math.ceil(dataNum / this.pageSize);
+      if (data) {
+        this.response = {
+          code: 1,
+          msg: '获取文章数据成功',
+          data,
+          pageSize: this.pageSize, // 每页条数
+          pageCount: this.pageCount, // 总页数
+          dataNum, // 总数据条数
+        };
+      } else {
+        this.response = {
+          code: 0,
+          msg: '获取文章数据失败',
+          data,
+        };
+      }
+    } catch (error) {
+      Logger.warn(error);
+      this.response = {
+        code: 0,
+        msg: '获取文章数据成功',
         data: error,
       };
     } finally {

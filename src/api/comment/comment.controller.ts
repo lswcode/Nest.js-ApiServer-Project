@@ -31,6 +31,11 @@ export class CommentController {
   public findAllComment(@Param('page') page: number) {
     return this.commentService.findComment(page);
   }
+  @Get('findById')
+  @ApiOperation({ summary: '根据文章id查找对应的评论' })
+  public findByIdFun(@Query() queryDto) {
+    return this.commentService.findByArticleId(queryDto.page, queryDto.id);
+  }
 
   @Put('update')
   @UseGuards(AuthGuard('jwt'))

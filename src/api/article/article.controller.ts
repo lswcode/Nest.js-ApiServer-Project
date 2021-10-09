@@ -8,6 +8,7 @@ import {
   Get,
   Req,
   Put,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -43,11 +44,15 @@ export class ArticleController {
   }
 
   @Post('find/:id')
-  @ApiOperation({ summary: '查询单篇文章接口' })
+  @ApiOperation({ summary: '根据ID查询单篇文章接口' })
   public findArticle(@Param('id') articleId: string) {
     return this.articleService.findArticle(articleId);
   }
-
+  @Get('findByTitle')
+  @ApiOperation({ summary: '根据文章标题查找文章数据' })
+  public findChannelByTitleFun(@Query() content) {
+    return this.articleService.findArticleByTitle(content.page, content.title);
+  }
   @Get('all/:page')
   @ApiOperation({ summary: '查找指定页码，并返回指定条数文章的接口' })
   public findAllArticle(@Param('page') page: number) {
