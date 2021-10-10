@@ -101,12 +101,12 @@ export class ArticleService {
   // -------------------------------查找指定页码，并返回指定条数文章的接口---------------------------------------------------------------------------
   public async findArticleByPage(page) {
     try {
+      const dataNum = (await this.ArticleModel.find()).length; // 先计算所有数据的总条数，返回给前端计算分页的总页数
       // 和前端约定好一页的数量，就可以根据前端请求的页码请求指定位置的数据
       const data = await this.ArticleModel.find()
         .sort({ _id: -1 })
         .skip(page > 1 ? (page - 1) * this.pageSize : 0)
         .limit(this.pageSize);
-      const dataNum = data.length;
       this.pageCount = Math.ceil(dataNum / this.pageSize);
       // Math.ceil取整函数，对数字向上取整
       this.response = {
@@ -136,6 +136,11 @@ export class ArticleService {
     endTime: string,
   ) {
     try {
+      const dataNum = (
+        await this.ArticleModel.find({
+          date: { $gte: startTime, $lte: endTime },
+        })
+      ).length; // 先计算所有数据的总条数，返回给前端计算分页的总页数
       // 和前端约定好一页的数量，就可以根据前端请求的页码请求指定位置的数据
       const data = await this.ArticleModel.find({
         date: { $gte: startTime, $lte: endTime },
@@ -143,7 +148,6 @@ export class ArticleService {
         .sort({ _id: -1 })
         .skip(page > 1 ? (page - 1) * this.pageSize : 0)
         .limit(this.pageSize);
-      const dataNum = data.length;
       this.pageCount = Math.ceil(dataNum / this.pageSize);
       // Math.ceil取整函数，对数字向上取整
       this.response = {
@@ -169,13 +173,13 @@ export class ArticleService {
   // ---------------------------根据输入的文章标题查找文章----------------------------------------------------------
   public async findArticleByTitle(page: number, title: string) {
     try {
+      const dataNum = (await this.ArticleModel.find({ title })).length; // 先计算所有数据的总条数，返回给前端计算分页的总页数
       const data: any = await this.ArticleModel.find({
         title: { $regex: `^${title}`, $options: 'i' },
       })
         .sort({ _id: -1 })
         .skip(page > 1 ? (page - 1) * this.pageSize : 0)
         .limit(this.pageSize);
-      const dataNum = data.length;
       this.pageCount = Math.ceil(dataNum / this.pageSize);
       if (data) {
         this.response = {

@@ -12,6 +12,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Comment } from 'src/interface/comment.interface';
+import { commentDto } from 'src/interface/response.interface';
 import { CommentService } from './comment.service';
 
 @Controller('comment')
@@ -33,13 +34,16 @@ export class CommentController {
   }
   @Get('findById')
   @ApiOperation({ summary: '根据文章id查找对应的评论' })
-  public findByIdFun(@Query() queryDto) {
-    return this.commentService.findByArticleId(queryDto.page, queryDto.id);
+  public findByIdFun(@Query() queryDto: commentDto) {
+    return this.commentService.findByArticleId(
+      queryDto.page,
+      queryDto.articleId,
+    );
   }
 
   @Put('update')
   @UseGuards(AuthGuard('jwt'))
-  @ApiOperation({ summary: '更新评论显示状态' })
+  @ApiOperation({ summary: '修改评论显示/关闭' })
   public findUser(@Query('_id') _id: string, @Body('show') show: boolean) {
     return this.commentService.updateComment(_id, show);
   }

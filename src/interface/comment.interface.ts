@@ -3,7 +3,7 @@ import { Prop, Schema } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document } from 'mongoose';
 
-@Schema()
+@Schema() // 表示创建一个mongodb的Schema结构模板
 export class Comment extends Document {
   @Prop()
   @ApiProperty({

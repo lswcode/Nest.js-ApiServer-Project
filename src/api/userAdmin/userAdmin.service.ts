@@ -15,6 +15,7 @@ export class UserAdminService {
   // -------------------------------查找指定页码，并返回指定条数用户信息的接口---------------------------------------------------------------------------
   public async findUserByPage(page) {
     try {
+      const dataNum = (await this.UserModel.find()).length; // 先计算所有数据的总条数，返回给前端计算分页的总页数
       // 和前端约定好一页的数量，就可以根据前端请求的页码请求指定位置的数据
       const data = await this.UserModel.find()
         .sort({ _id: -1 })
@@ -22,7 +23,6 @@ export class UserAdminService {
         // skip()方法用来跳过指定数量的数据
         .limit(this.pageSize);
       // limit()方法指定返回的数据数量
-      const dataNum = data.length;
       this.pageCount = Math.ceil(dataNum / this.pageSize);
       // Math.ceil取整函数，对数字向上取整
       this.response = {

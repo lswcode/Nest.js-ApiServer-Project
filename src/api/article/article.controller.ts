@@ -19,22 +19,24 @@ import { ArticleService } from './article.service';
 @Controller('article')
 @ApiTags('文章接口')
 @ApiBearerAuth('jwt')
-@UseGuards(AuthGuard('jwt'))
 export class ArticleController {
   constructor(private articleService: ArticleService) {}
   @Post('create')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '创建文章' })
   public addArticle(@Body() article: Article) {
     return this.articleService.createArticle(article);
   }
 
   @Post('delete/:id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '删除文章' })
   public removeArticle(@Param('id') articleId: string) {
     return this.articleService.delArticle(articleId);
   }
 
   @Post('change/:id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '修改文章' })
   public changeArticle(
     @Param('id') articleId: string,
