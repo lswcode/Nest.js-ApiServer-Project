@@ -51,6 +51,7 @@ export class UserService {
         try {
           const createUser = new this.UserModel(user); // 实例化一个数据库Module模型，即创建一个文档数据
           createUser.date = createUser._id.getTimestamp().toLocaleDateString();
+          // xxx._id.getTimestamp()可以获取创建时间，这是mongoose的方法   // toLocaleDateString()是格式化时间，转换成2021/10/11 的格式，没有小时和分钟
           await createUser.save();
           this.response = {
             code: 1,

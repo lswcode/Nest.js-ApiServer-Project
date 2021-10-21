@@ -3,6 +3,7 @@ import { Article } from 'src/interface/article.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { responseInterface } from 'src/interface/response.interface';
+import { dateFormat } from 'src/utils/date';
 
 @Injectable()
 export class ArticleService {
@@ -16,7 +17,8 @@ export class ArticleService {
   // -----------------------------创建文章接口------------------------------------------------------
   public async createArticle(article: Article) {
     const createArticle = new this.ArticleModel(article);
-    createArticle.date = createArticle._id.getTimestamp().toLocaleDateString(); // 格式化创建文件的时间
+    const date = new Date();
+    createArticle.date = dateFormat('YYYY-mm-dd HH:MM', date);
     try {
       const data = await createArticle.save();
       this.response = {

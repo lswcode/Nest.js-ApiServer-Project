@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { responseInterface } from 'src/interface/response.interface';
 import { Comment } from 'src/interface/comment.interface';
+import { dateFormat } from 'src/utils/date';
 
 @Injectable()
 export class CommentService {
@@ -18,7 +19,8 @@ export class CommentService {
     comment.show = true;
     comment.userName = userName;
     const createComment = new this.CommentModel(comment);
-    createComment.date = createComment._id.getTimestamp().toLocaleDateString(); // 格式化创建文件的时间
+    const date = new Date();
+    createComment.date = dateFormat('YYYY-mm-dd HH:MM', date);
     try {
       const data = await createComment.save();
       this.response = {
