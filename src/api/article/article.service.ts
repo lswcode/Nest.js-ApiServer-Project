@@ -103,14 +103,13 @@ export class ArticleService {
   // -------------------------------查找指定页码，并返回指定条数文章的接口---------------------------------------------------------------------------
   public async findArticleByPage(page) {
     try {
-      const dataNum = (await this.ArticleModel.find()).length; // 先计算所有数据的总条数，返回给前端计算分页的总页数
-      // 和前端约定好一页的数量，就可以根据前端请求的页码请求指定位置的数据
+      const dataNum = (await this.ArticleModel.find()).length;
+      // Model.find(),查询所有符合条件的文档，会返回一个数组,如果查询不到数据则返回一个空数组
       const data = await this.ArticleModel.find()
         .sort({ _id: -1 })
         .skip(page > 1 ? (page - 1) * this.pageSize : 0)
         .limit(this.pageSize);
       this.pageCount = Math.ceil(dataNum / this.pageSize);
-      // Math.ceil取整函数，对数字向上取整
       this.response = {
         code: 1,
         msg: '获取文章数据成功',

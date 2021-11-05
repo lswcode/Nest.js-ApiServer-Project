@@ -10,14 +10,17 @@ import { JwtService } from '@nestjs/jwt';
 export class UserService {
   private response: responseInterface;
   constructor(
-    @InjectModel('USER_MODEL') private readonly UserModel: Model<User>,
+    // 使用构造函数和@InjectModel装饰器将USER模型注入到UserService中:
+    @InjectModel('USER_MODEL') private readonly UserModel: Model<User>, // 注册声明一个属性UserModel，就是一个数据库Model，后面是类型注解
     private readonly jwtService: JwtService, //用来生成token
   ) {}
   // ---------------------------工具方法-----------------------------------------------------------
+  // 注册接口方法，public公共方法，可以被任意调用
   private createToken(userId) {
     const token = this.jwtService.sign({ id: String(userId) }); // sign的参数必须是对象，键值对格式
     return token; // 使用jwt内置的方法根据user生成指定的token
   }
+  // 把通过账号查找用户方法封装起来，在别的地方也可以用
   public async findOneByAccount(account: string) {
     return this.UserModel.findOne({
       account,
@@ -41,7 +44,7 @@ export class UserService {
           code: 0,
           msg: '该用户名已被注册',
         };
-        throw this.response;
+        throw this.response; // 抛出异常后,后面的代码无法执行,catch中会接受这个异常，也就是抛出的this.response
       } else if (account) {
         this.response = {
           code: 0,
@@ -87,6 +90,8 @@ export class UserService {
         };
       } else {
         const saltPassword = encript(password, res.salt);
+        // 将当前未知是否正确的密码，和该用户名对应的salt传入函数，得到salt加密后的密码
+        // 将加密后的密码和正确的加密密码比较
         console.log(saltPassword);
         if (!backstageAuth) {
           if (saltPassword == res.password) {
@@ -94,8 +99,8 @@ export class UserService {
             this.response = {
               code: 1,
               msg: '登陆成功',
-              userId: res._id,
-              token, //将token返回给前端
+              userId: res._id, // 登录成功时，则把用户数据库id和token都返回给前端
+              token,
             };
           } else {
             this.response = {
@@ -148,6 +153,7 @@ export class UserService {
         };
       } else {
         await this.UserModel.findOneAndUpdate(
+          // 这个mongoose的查询方法
           { account: user.account },
           user,
           {},
