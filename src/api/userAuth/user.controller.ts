@@ -10,7 +10,6 @@ import { UserService } from './user.service';
 @ApiBearerAuth('jwt') // 这个是用来在swagger中测试token的，本身不能触发token守卫
 export class UserController {
   constructor(private userService: UserService) {}
-
   @Post('login')
   @ApiOperation({ summary: '用户登录接口' })
   public async userAuth(@Body() userDto: UserAuth) {

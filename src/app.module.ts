@@ -8,6 +8,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { CommentModule } from './api/comment/comment.module';
 import { UserAdminModule } from './api/userAdmin/userAdmin.module';
 import { ChannelModule } from './api/channel/channel.module';
+import { TestModule } from './api/test/test.module';
 
 @Module({
   //使用@Module修饰的就是一个模块，里面有控制器controller和服务service
@@ -19,6 +20,7 @@ import { ChannelModule } from './api/channel/channel.module';
     CommentModule,
     UserAdminModule,
     ChannelModule,
+    TestModule,
   ],
   controllers: [AppController],
   providers: [AppService],
