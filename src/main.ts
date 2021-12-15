@@ -27,7 +27,7 @@ const bootstrap = async () => {
   // 全局过滤器
   app.useGlobalFilters(new HttpExceptionFilter()); // 对返回给前端的报错进行统一处理，加上日期和请求的路径
   // ------------------------------------------------
-  // app.enableCors(); // 设置允许跨域，在生产环境中由后端服务器端解决跨域问题
+  app.enableCors(); // 设置允许跨域，在生产环境中由后端服务器端解决跨域问题
   await app.listen(port);
 };
 

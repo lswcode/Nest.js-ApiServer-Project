@@ -35,7 +35,7 @@ export class ChannelService {
       return this.response;
     }
   }
-  // -----------------------------------------------------------------------------------
+  // -----------获取频道名称接口------------------------------------------------------------------------
   public async channelName() {
     try {
       const data: any = await this.ChannelModel.find().distinct('name');
@@ -120,7 +120,7 @@ export class ChannelService {
       Logger.warn(error);
       this.response = {
         code: 0,
-        msg: '获取搜索建议成功',
+        msg: '获取搜索建议失败',
         data: error,
       };
     } finally {
