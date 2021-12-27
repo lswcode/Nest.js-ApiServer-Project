@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 
 @Controller('test')
 export class TestController {
@@ -20,5 +20,9 @@ export class TestController {
         age: 27,
       },
     ])`;
+  }
+  @Post('xb')
+  public postFun() {
+    return '小蓝';
   }
 }
