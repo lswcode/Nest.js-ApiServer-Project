@@ -12,8 +12,6 @@ import { TestModule } from './api/test/test.module';
 import { TaskModule } from './api/task/task.module';
 
 @Module({
-  //使用@Module修饰的就是一个模块，里面有控制器controller和服务service
-  // 所有其他的Module都要导入到这，然后这个app.module被main启动，这样所有的Module都被导入main中了
   imports: [
     DbModule,
     UserModule,

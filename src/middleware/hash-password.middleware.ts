@@ -5,7 +5,6 @@ import { addSalt, encript } from 'src/utils/crypto';
 @Injectable()
 export class HashPasswordMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    // :后面的都是类型注解，是node定义好的类型，ctrl+左键可以查看interface
     let userPassword = req.body['password']; // 这里不能使用.来访问，只是使用中括号,因为req中类型注解中没有password，使用中括号则没有限制，即使不存在这个变量
     if (userPassword) {
       req.body['originalPassword'] = userPassword; // 在这存入用户初始密码，实际中为了用户安全不应该把这个密码暴露
