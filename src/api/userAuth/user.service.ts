@@ -75,6 +75,22 @@ export class UserService {
     }
   }
 
+  // ---将返回给前端的数据处理相关代码，封装成一个函数----------------------------------------------------------
+  public responseHandle(code, msg, obj?) {
+    this.response = {
+      code,
+      msg,
+    };
+    if (!obj) {
+      return this.response;
+    }
+    const keyArr = Object.keys(obj); // 如果还存在其它的参数，需要遍历获取键名和键值，赋值给this.response
+    keyArr.map((item) => {
+      this.response[item] = obj[item];
+    });
+    return this.response;
+  }
+
   // -----------------------用户登录方法--------------------------------------------
   public async login(user: UserAuth, backstageAuth = false) {
     // 当backstageAuth的值为true时，则表示后台管理员登录，需要判断权限
@@ -84,19 +100,12 @@ export class UserService {
     const password: string = user.password;
     try {
       if (!(account && password)) {
-        this.response = {
-          code: 10001,
-          msg: '请求参数错误!',
-        };
-        return this.response;
+        return this.responseHandle(10001, '请求参数错误!'); // 将重复的代码抽离，封装成一个处理函数，直接调用即可
       }
 
       const res = await this.findOneByAccount(account);
       if (!res) {
-        this.response = {
-          code: 0,
-          msg: '用户不存在',
-        };
+        return this.responseHandle(10002, '用户不存在');
       } else {
         const saltPassword = encript(password, res.salt);
         // 将当前未知是否正确的密码，和该用户名对应的salt传入函数，得到salt加密后的密码
@@ -105,39 +114,32 @@ export class UserService {
         if (!backstageAuth) {
           if (saltPassword == res.password) {
             const token: string = this.createToken(res._id);
-            this.response = {
-              code: 1,
-              msg: '登陆成功',
-              userId: res._id, // 登录成功时，则把用户数据库id和token都返回给前端
-              token,
-            };
+            this.responseHandle(1, '登陆成功', {
+              userId: res._id,
+              token: token,
+            });
+            // this.response = {
+            //   code: 1,
+            //   msg: '登陆成功',
+            //   userId: res._id, // 登录成功时，则把用户数据库id和token都返回给前端
+            //   token,
+            // };
           } else {
-            this.response = {
-              code: 2,
-              msg: '账号或密码不正确',
-            };
+            this.response = this.responseHandle(2, '账号或密码不正确');
           }
         } else {
           if (res.backstageAuth == 'admin') {
             if (saltPassword == res.password) {
               const token: string = this.createToken(res._id);
-              this.response = {
-                code: 1,
-                msg: '登陆成功',
+              this.responseHandle(1, '登陆成功', {
                 userId: res._id,
-                token, //将token返回给前端
-              };
+                token: token,
+              });
             } else {
-              this.response = {
-                code: 2,
-                msg: '账号或密码不正确',
-              };
+              this.response = this.responseHandle(2, '账号或密码不正确');
             }
           } else {
-            this.response = {
-              code: 2,
-              msg: '账号权限不足',
-            };
+            this.response = this.responseHandle(2, '账号权限不足');
           }
         }
       }
