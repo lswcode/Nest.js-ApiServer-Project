@@ -79,9 +79,18 @@ export class UserService {
   public async login(user: UserAuth, backstageAuth = false) {
     // 当backstageAuth的值为true时，则表示后台管理员登录，需要判断权限
     // 用户数据下的backstageAuth == 'admin'才可以登录
+    console.log(user, user.account, user.password);
     const account: string = user.account;
     const password: string = user.password;
     try {
+      if (!(account && password)) {
+        this.response = {
+          code: 10001,
+          msg: '请求参数错误!',
+        };
+        return this.response;
+      }
+
       const res = await this.findOneByAccount(account);
       if (!res) {
         this.response = {
