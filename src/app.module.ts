@@ -9,6 +9,7 @@ import { CommentModule } from './api/comment/comment.module';
 import { UserAdminModule } from './api/userAdmin/userAdmin.module';
 import { ChannelModule } from './api/channel/channel.module';
 import { TestModule } from './api/test/test.module';
+import { Log4jsModule } from '@nestx-log4js/core';
 import { TaskModule } from './api/task/task.module';
 
 @Module({
@@ -21,6 +22,7 @@ import { TaskModule } from './api/task/task.module';
     ChannelModule,
     TestModule,
     TaskModule,
+    Log4jsModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

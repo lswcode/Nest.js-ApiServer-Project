@@ -106,13 +106,13 @@ export class CommentService {
   // --------------修改评论显示状态-------------------------------------------------------------------
   public async updateComment(_id: string, show: boolean) {
     try {
-      console.log(show);
+      Logger.log(show);
       const data = await this.CommentModel.findByIdAndUpdate(_id, {
         show,
       });
-      // console.log(data); // 更新数据时，返回的值是原数据，而不是更新后的数据
+      // Logger.log(data); // 更新数据时，返回的值是原数据，而不是更新后的数据
       // const res = await this.CommentModel.findById(_id);
-      // console.log(res); // 重新查询才能看到更新后的数据
+      // Logger.log(res); // 重新查询才能看到更新后的数据
       this.response = {
         code: 1,
         msg: '评论显示状态修改成功',

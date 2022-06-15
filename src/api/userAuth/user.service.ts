@@ -34,8 +34,7 @@ export class UserService {
   // ------------------------用户注册方法---------------------------------------------------------
 
   public async regist(user: User) {
-    console.log('执行注册');
-
+    Logger.log('执行注册');
     try {
       const userName = await this.findOneByUserName(user.userName);
       const account = await this.findOneByAccount(user.account);
@@ -95,7 +94,7 @@ export class UserService {
   public async login(user: UserAuth, backstageAuth = false) {
     // 当backstageAuth的值为true时，则表示后台管理员登录，需要判断权限
     // 用户数据下的backstageAuth == 'admin'才可以登录
-    console.log(user, user.account, user.password);
+    Logger.log(user, user.account, user.password);
     const account: string = user.account;
     const password: string = user.password;
     try {
@@ -110,7 +109,7 @@ export class UserService {
         const saltPassword = encript(password, res.salt);
         // 将当前未知是否正确的密码，和该用户名对应的salt传入函数，得到salt加密后的密码
         // 将加密后的密码和正确的加密密码比较
-        console.log(saltPassword);
+        Logger.log(saltPassword);
         if (!backstageAuth) {
           if (saltPassword == res.password) {
             const token: string = this.createToken(res._id);
@@ -156,7 +155,7 @@ export class UserService {
   public async changePsaaword(user: User) {
     try {
       const account = await this.findOneByAccount(user.account);
-      console.log(account);
+      Logger.log(account);
       if (!account) {
         this.response = {
           code: 0,
@@ -191,10 +190,10 @@ export class UserService {
   // -----------------------用户个人信息添加和修改--------------------------------------------------------------------------------
 
   public async userInfor(userId: string, information: UserInfo) {
-    console.log(userId);
+    Logger.log(userId);
     try {
       const account = await this.UserModel.findById(userId);
-      console.log(account);
+      Logger.log(account);
       if (!account) {
         this.response = {
           code: 0,

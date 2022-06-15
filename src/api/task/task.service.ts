@@ -12,6 +12,7 @@ export class TaskService {
   ) {}
 
   async handleFun(fun, message: string) {
+    Logger.log('你好');
     try {
       const data: any = await fun;
       if (data) {

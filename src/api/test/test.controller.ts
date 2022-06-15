@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Logger } from '@nestjs/common';
 
 @Controller('test')
 export class TestController {
   @Get('xb')
   public getFun() {
+    Logger.log('你好小白');
     return '小白';
   }
 

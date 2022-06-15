@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Logger } from '@nestjs/common';
 import { HttpExceptionFilter } from './utils/http-exception.filter';
+import { Log4jsLogger } from '@nestx-log4js/core';
 
 const port = 3000;
 const bootstrap = async () => {
@@ -23,6 +24,8 @@ const bootstrap = async () => {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-ui', app, document);
+
+  app.useLogger(app.get(Log4jsLogger)); // 使用log4js
 
   // 全局过滤器
   app.useGlobalFilters(new HttpExceptionFilter()); // 对返回给前端的报错进行统一处理，加上日期和请求的路径
