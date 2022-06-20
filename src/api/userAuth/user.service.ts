@@ -103,6 +103,7 @@ export class UserService {
       }
       const res = await this.findOneByAccount(account);
       if (!res) {
+        Logger.log('用户不存在');
         this.response = this.responseHandle(10002, '用户不存在');
       } else {
         const saltPassword = encript(password, res.salt);
