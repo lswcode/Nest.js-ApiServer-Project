@@ -99,12 +99,11 @@ export class UserService {
     const password: string = user.password;
     try {
       if (!(account && password)) {
-        return this.responseHandle(10001, '请求参数错误!'); // 将重复的代码抽离，封装成一个处理函数，直接调用即可
+        this.response = this.responseHandle(10001, '请求参数错误!'); // 将重复的代码抽离，封装成一个处理函数，直接调用即可
       }
-
       const res = await this.findOneByAccount(account);
       if (!res) {
-        return this.responseHandle(10002, '用户不存在');
+        this.response = this.responseHandle(10002, '用户不存在');
       } else {
         const saltPassword = encript(password, res.salt);
         // 将当前未知是否正确的密码，和该用户名对应的salt传入函数，得到salt加密后的密码
