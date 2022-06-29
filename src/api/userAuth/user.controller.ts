@@ -15,6 +15,7 @@ export class UserController {
   public async userAuth(@Body() userDto: UserAuth) {
     return await this.userService.login(userDto, false);
   }
+
   @Post('backstageLogin')
   @ApiOperation({ summary: '后台登录接口' })
   public async backstageAuth(@Body() userDto: UserAuth) {

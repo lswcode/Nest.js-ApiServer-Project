@@ -18,11 +18,11 @@ import { CommentService } from './comment.service';
 @Controller('comment')
 @ApiTags('用户评论接口')
 @ApiBearerAuth('jwt')
-@UseGuards(AuthGuard('jwt'))
 export class CommentController {
   constructor(private commentService: CommentService) {}
   @Post('create')
   @ApiOperation({ summary: '创建评论' })
+  @UseGuards(AuthGuard('jwt'))
   public addComment(@Req() req, @Body() comment: Comment) {
     return this.commentService.createComment(comment, req.user.userName);
   }
@@ -32,6 +32,7 @@ export class CommentController {
   public findAllComment(@Param('page') page: number) {
     return this.commentService.findComment(page);
   }
+
   @Get('findById')
   @ApiOperation({ summary: '根据文章id查找对应的评论' })
   public findByIdFun(@Query() queryDto: commentDto) {
