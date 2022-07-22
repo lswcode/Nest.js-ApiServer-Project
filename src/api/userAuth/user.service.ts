@@ -223,4 +223,31 @@ export class UserService {
       return this.response;
     }
   }
+
+  public async findUserInfo(user) {
+    console.log(user);
+    try {
+      if (user) {
+        this.response = {
+          code: 1,
+          msg: '获取用户数据成功',
+          userName: user.userName,
+        };
+      } else {
+        this.response = {
+          code: 0,
+          msg: '用户不存在',
+        };
+      }
+    } catch (error) {
+      Logger.warn(error);
+      this.response = {
+        code: 0,
+        msg: '获取用户数据失败',
+        data: error,
+      };
+    } finally {
+      return this.response;
+    }
+  }
 }

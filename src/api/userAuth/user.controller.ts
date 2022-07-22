@@ -49,4 +49,10 @@ export class UserController {
   // hello() {
   //   return 'hello';
   // }
+  @Post('userInfo')
+  @UseGuards(AuthGuard('jwt')) // 这个才是用来触发token守卫的
+  @ApiOperation({ summary: '直接返回用户信息' })
+  public async findUserInfo(@Req() req) {
+    return await this.userService.findUserInfo(req.user);
+  }
 }

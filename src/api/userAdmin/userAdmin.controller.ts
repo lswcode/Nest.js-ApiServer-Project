@@ -1,4 +1,12 @@
-import { Controller, Get, UseGuards, Param, Query, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Param,
+  Query,
+  Req,
+  Post,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { UserAdminService } from './userAdmin.service';
@@ -14,7 +22,6 @@ export class UserAdminController {
   public findAllUser(@Param('page') page: number) {
     return this.userAdminService.findUserByPage(page);
   }
-
   @Get('findUser')
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '根据用户名返回指定用户数据' })
